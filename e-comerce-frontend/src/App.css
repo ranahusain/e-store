@@ -1,0 +1,28 @@
+/* App CSS - Bootstrap Utilities */
+
+.app {
+  min-height: 100vh;
+}
+
+/* Loading and Error States */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.error-message {
+  padding: 2rem;
+  background-color: #f8d7da;
+  color: #721c24;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+}
+
+/* Responsive Container Padding */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 0 1rem;
+  }
+}

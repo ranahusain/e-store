@@ -1,0 +1,136 @@
+.admin-add-product-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.admin-form-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.back-btn:hover {
+  transform: scale(1.1);
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.image-preview {
+  width: 100%;
+  max-height: 300px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.submit-btn {
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .admin-form-wrapper {
+    padding: 20px;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
