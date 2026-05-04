@@ -98,10 +98,7 @@ function AdminAddProduct() {
                   >
                     <i className="fas fa-arrow-left fa-2x text-dark"></i>
                   </button>
-                  <h1 className="fw-bold mb-0">
-                    <i className="fas fa-plus-circle me-3"></i>
-                    Add New Product
-                  </h1>
+                  <h1 className="fw-bold mb-0">Add New Product</h1>
                 </div>
 
                 {/* Error Alert */}
@@ -264,10 +261,7 @@ function AdminAddProduct() {
                           Adding Product...
                         </>
                       ) : (
-                        <>
-                          <i className="fas fa-plus me-2"></i>
-                          Add Product
-                        </>
+                        <>Add Product</>
                       )}
                     </button>
                     <button

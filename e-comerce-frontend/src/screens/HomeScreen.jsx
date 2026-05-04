@@ -89,7 +89,7 @@ const HomeScreen = () => {
                   transition: "all 0.3s ease",
                 }}
               >
-                <i className="fas fa-shopping-bags fa-3x text-dark mb-3"></i>
+                <i className="fas fa-shopping-bag fa-3x text-dark mb-3"></i>
                 <h5>Fashion</h5>
                 <p className="text-muted">Trendy clothing and accessories</p>
               </div>
