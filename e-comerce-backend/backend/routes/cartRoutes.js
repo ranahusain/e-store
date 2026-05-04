@@ -1,17 +1,22 @@
-const express = require('express')
+const express = require("express");
 const {
   addProductInCart,
   deleteProductInCart,
+  deleteProductInCartByProductId,
   getCartProducts,
-} = require('../controller/cart.controller')
-const {verifyUser} = require('../middleware/middleware')
-const router = express.Router()
+} = require("../controller/cart.controller");
+const { verifyUser } = require("../middleware/middleware");
+const router = express.Router();
 
 router
-  .route('/')
+  .route("/")
   .get([verifyUser], getCartProducts)
-  .post([verifyUser], addProductInCart)
+  .post([verifyUser], addProductInCart);
 
-router.route('/:id').delete([verifyUser], deleteProductInCart)
+router
+  .route("/product/:productId")
+  .delete([verifyUser], deleteProductInCartByProductId);
 
-module.exports = router
+router.route("/:id").delete([verifyUser], deleteProductInCart);
+
+module.exports = router;

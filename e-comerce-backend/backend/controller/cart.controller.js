@@ -18,9 +18,9 @@ const addProductInCart = async (req, res) => {
   const { productId, count } = req.body;
   try {
     const cart = await Cart.findOneAndUpdate(
-      { productId },
+      { productId, userId: req.user._id },
       { productId, count, userId: req.user._id },
-      { upsert: true },
+      { upsert: true, new: true, setDefaultsOnInsert: true },
     );
 
     res.status(201).send({ status: "ok", cart });
@@ -31,11 +31,30 @@ const addProductInCart = async (req, res) => {
 };
 const deleteProductInCart = async (req, res) => {
   try {
-    await Cart.findByIdAndDelete(req.params.id);
+    await Cart.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
     res.status(200).send({ status: "ok" });
   } catch (e) {
     console.log(e);
     sendResponseError(500, `Error ${e}`, res);
   }
 };
-module.exports = { addProductInCart, deleteProductInCart, getCartProducts };
+
+const deleteProductInCartByProductId = async (req, res) => {
+  try {
+    await Cart.findOneAndDelete({
+      productId: req.params.productId,
+      userId: req.user._id,
+    });
+    res.status(200).send({ status: "ok" });
+  } catch (e) {
+    console.log(e);
+    sendResponseError(500, `Error ${e}`, res);
+  }
+};
+
+module.exports = {
+  addProductInCart,
+  deleteProductInCart,
+  deleteProductInCartByProductId,
+  getCartProducts,
+};

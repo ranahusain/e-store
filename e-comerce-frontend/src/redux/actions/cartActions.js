@@ -1,11 +1,16 @@
-import * as actionTypes from '../constants/cartConstants'
-import axios from 'axios'
-import {Api} from '../../utils/Api'
-import {convertToCartData} from '../../utils/utils.function'
+import * as actionTypes from "../constants/cartConstants";
+import axios from "axios";
+import { Api } from "../../utils/Api";
+import { convertToCartData } from "../../utils/utils.function";
 
-export const addToCart = (id, qty) => async dispatch => {
-  const {data} = await Api.getRequest(`/api/products/${id}`)
-  const product = JSON.parse(data)
+export const addToCart = (id, qty) => async (dispatch) => {
+  const { data } = await Api.getRequest(`/api/products/${id}`);
+  const product = JSON.parse(data);
+  const { data: cartData } = await Api.postRequest("/api/cart", {
+    productId: id,
+    count: qty,
+  });
+  const { cart } = cartData ? JSON.parse(cartData) : {};
   // console.log(product)
   dispatch({
     type: actionTypes.ADD_TO_CART,
@@ -16,27 +21,31 @@ export const addToCart = (id, qty) => async dispatch => {
       price: product.price,
       countInStock: product.countInStock,
       qty,
+      _id: cart?._id,
     },
-  })
-
-  Api.postRequest('/api/cart', {productId: id, count: qty})
-}
+  });
+};
 
 export const removeFromCart =
-  ({pId, _id}) =>
-  dispatch => {
+  ({ pId, _id }) =>
+  async (dispatch) => {
+    if (_id) {
+      await Api.DeleteRequest("/api/cart/" + _id);
+    } else {
+      await Api.DeleteRequest("/api/cart/product/" + pId);
+    }
+
     dispatch({
       type: actionTypes.REMOVE_FROM_CART,
       payload: pId,
-    })
-    Api.DeleteRequest('/api/cart/' + _id)
-  }
+    });
+  };
 
-export const fetchCart = () => async dispatch => {
+export const fetchCart = () => async (dispatch) => {
   try {
-    const {data: strigifyData} = await Api.getRequest(`/api/cart/`)
+    const { data: strigifyData } = await Api.getRequest(`/api/cart/`);
     // console.log({strigifyData})
-    const {carts} = JSON.parse(strigifyData)
+    const { carts } = JSON.parse(strigifyData);
     // console.log(carts)
 
     dispatch({
@@ -44,11 +53,11 @@ export const fetchCart = () => async dispatch => {
       payload: {
         carts: convertToCartData(carts),
       },
-    })
+    });
   } catch (e) {
-    console.log('EROROR :  ', e)
+    console.log("EROROR :  ", e);
   }
-}
+};
 
 // x = [
 //   {
