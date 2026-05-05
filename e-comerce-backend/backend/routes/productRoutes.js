@@ -4,11 +4,13 @@ const {
   getProducts,
   getProductById,
   createProduct,
+  updateProduct,
 } = require("../controller/productControllers");
 const { verifyUser } = require("../middleware/middleware");
 
 router.get("/", getProducts);
 router.get("/:id", getProductById);
 router.post("/", verifyUser, createProduct);
+router.put("/:id", verifyUser, updateProduct);
 
 module.exports = router;

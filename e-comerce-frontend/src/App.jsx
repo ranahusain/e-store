@@ -42,7 +42,7 @@ function App() {
           <Route exact path="/checkout" component={CheckoutScreen} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/signin" component={SignIn} />
-          <Route exact path="/admin/add-product" component={AdminAddProduct} />
+          <Route path="/admin/add-product/:id?" component={AdminAddProduct} />
         </Switch>
       </main>
     </Router>

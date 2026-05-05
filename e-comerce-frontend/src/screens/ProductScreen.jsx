@@ -154,6 +154,18 @@ const ProductScreen = ({ match, history }) => {
                       <i className="fas fa-heart me-2"></i>
                       Add to Wishlist
                     </button>
+                    {user.userInfo?.details?.isAdmin && (
+                      <button
+                        type="button"
+                        className="btn btn-warning btn-lg"
+                        onClick={() =>
+                          history.push(`/admin/add-product/${product._id}`)
+                        }
+                      >
+                        <i className="fas fa-edit me-2"></i>
+                        Edit Product
+                      </button>
+                    )}
                   </div>
 
                   {/* Product Info */}

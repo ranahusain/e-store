@@ -1,9 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Api } from "../../utils/Api";
 
-function AdminAddProduct() {
+function AdminAddProduct({ match }) {
   const { push } = useHistory();
+  const productId = match?.params?.id;
+  const isEditMode = !!productId;
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -12,8 +15,34 @@ function AdminAddProduct() {
     imageUrl: "",
   });
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(isEditMode);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // Fetch product data if in edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      const fetchProduct = async () => {
+        try {
+          const { data } = await Api.getRequest(`/api/products/${productId}`);
+          const product = JSON.parse(data);
+          setFormData({
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            countInStock: product.countInStock,
+            imageUrl: product.imageUrl,
+          });
+          setInitialLoading(false);
+        } catch (err) {
+          console.error("Error fetching product:", err);
+          setError("Failed to load product");
+          setInitialLoading(false);
+        }
+      };
+      fetchProduct();
+    }
+  }, [isEditMode, productId]);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -41,12 +70,20 @@ function AdminAddProduct() {
       }
 
       setLoading(true);
-      const { statusCode, data } = await Api.postRequest("/api/products", {
+      const payload = {
         ...formData,
         price: parseFloat(formData.price),
         countInStock: parseInt(formData.countInStock),
-      });
+      };
 
+      let response;
+      if (isEditMode) {
+        response = await Api.putRequest(`/api/products/${productId}`, payload);
+      } else {
+        response = await Api.postRequest("/api/products", payload);
+      }
+
+      const { statusCode, data } = response;
       setLoading(false);
 
       if (statusCode === 400 || statusCode === 500 || statusCode === 403) {
@@ -54,23 +91,30 @@ function AdminAddProduct() {
         return;
       }
 
-      setSuccess("Product added successfully!");
-      setFormData({
-        name: "",
-        description: "",
-        price: "",
-        countInStock: "",
-        imageUrl: "",
-      });
+      setSuccess(
+        isEditMode
+          ? "Product updated successfully!"
+          : "Product added successfully!",
+      );
+
+      if (!isEditMode) {
+        setFormData({
+          name: "",
+          description: "",
+          price: "",
+          countInStock: "",
+          imageUrl: "",
+        });
+      }
 
       setTimeout(() => {
         push("/");
       }, 1500);
     },
-    [formData, push],
+    [formData, push, isEditMode, productId],
   );
 
-  if (loading)
+  if (loading || initialLoading)
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -98,7 +142,9 @@ function AdminAddProduct() {
                   >
                     <i className="fas fa-arrow-left fa-2x text-dark"></i>
                   </button>
-                  <h1 className="fw-bold mb-0">Add New Product</h1>
+                  <h1 className="fw-bold mb-0">
+                    {isEditMode ? "Edit Product" : "Add New Product"}
+                  </h1>
                 </div>
 
                 {/* Error Alert */}
@@ -258,10 +304,12 @@ function AdminAddProduct() {
                             role="status"
                             aria-hidden="true"
                           ></span>
-                          Adding Product...
+                          {isEditMode
+                            ? "Updating Product..."
+                            : "Adding Product..."}
                         </>
                       ) : (
-                        <>Add Product</>
+                        <>{isEditMode ? "Update Product" : "Add Product"}</>
                       )}
                     </button>
                     <button
