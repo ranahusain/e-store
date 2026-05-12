@@ -3,7 +3,7 @@ const devConfig = {
 };
 
 const prodConfig = {
-  baseURL: "https://e-store-4scm.onrender.com",
+  baseURL: "https://e-store-1-t29r.onrender.com/",
 };
 
 export const config = import.meta.env.PROD ? prodConfig : devConfig;
